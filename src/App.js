@@ -7,10 +7,8 @@ import Searchbar from './components/Searchbar/Searchbar';
 import ImageGallery from './components/ImageGallery/ImageGallery';
 import Button from './components/Button/Button';
 import Modal from './components/Modal/Modal';
+import imageAPI from './services/images-api';
 import s from './App.module.css';
-
-// ключь API
-const keyApi = '18681025-f668a3aca189dfba87ba57015';
 
 export default function App() {
   const [imagesArray, setImagesArray] = useState([]);
@@ -46,10 +44,8 @@ export default function App() {
       behavior: 'smooth',
     });
 
-    fetch(
-      `https://pixabay.com/api/?q=${searchQuery}&page=${currentPage}&key=${keyApi}&image_type=photo&orientation=horizontal&per_page=12`,
-    )
-      .then(responce => responce.json())
+    imageAPI
+      .fetchImages(searchQuery, currentPage)
       .then(data => {
         setImagesArray(prevImages => [...prevImages, ...data.hits]);
         setCurrentPage(prevPage => prevPage + 1);
